@@ -1,0 +1,44 @@
+{%extends 'base/main.html'%}
+{% block content %}
+{% comment %} this will help to create View {% endcomment %}
+
+<div class="header-bar">
+    <a href="{% url 'tasks' %}">&#8592; Back</a>
+
+</div>
+
+<h3>Task Form "from html"</h3>
+
+<div class="card-body">
+    <form method ="POST" action = "">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-primary">Save</button>
+        {% comment %} <input class="button" type="submit" value= "Subimt"> {% endcomment %}
+    </form>
+</div> 
+
+<!-- JavaScript for toggling 'allowed_users' field based on visibility -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const visibilityField = document.querySelector('#id_visibility');
+        const allowedUsersDiv = document.querySelector('.field-allowed_users');
+
+        function toggleAllowedUsers() {
+            if (visibilityField.value === 'protected') {
+                allowedUsersDiv.style.display = 'block';
+            } else {
+                allowedUsersDiv.style.display = 'none';
+            }
+        }
+
+        if (visibilityField && allowedUsersDiv) {
+            visibilityField.addEventListener('change', toggleAllowedUsers);
+            toggleAllowedUsers(); // Run on initial load
+        } 
+    });
+</script>
+
+
+
+{%endblock content%}

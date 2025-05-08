@@ -1,0 +1,99 @@
+{%extends 'base/main.html'%}
+{% block content %}
+
+
+<div class="header-bar">
+    <div>   
+        <h1>Hello {{request.user|title}}</h1>
+        <h3 style="margin:0">You have <i>{{count}} </i>incomplete task{{ count|pluralize:"s" }}</h3>
+    </div>
+    {%if request.user.is_authenticated%}
+    {% comment %} <p>{{request.user}}</p> {% endcomment %}
+    {% comment %} <a href="{% url 'logout' %}">Logout</a> {% endcomment %}
+    <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+        {% csrf_token %}
+        <a href="#" onclick="this.closest('form').submit(); return false;">Logout</a>
+        <br>
+
+    </form>
+    {% comment %} <a href="#" onclick="document.getElementById('myForm').submit(); return false;">Dashboard</a> {% endcomment %}
+    <a href="{% url 'dashboard' %}" class="btn btn-link">Dashboard</a>
+
+
+    {%else%}
+        <a href="{% url 'login' %}">Login</a>
+    {%endif%}
+
+
+</div>
+
+
+<div id="search-add-wrapper">
+    <form method="GET" style="margin-top: 20px;display:flex;">
+        <input type="text" name="search-area" value ="{{search_input}}">
+        <input class="button" type="submit" value = "Search">
+
+    </form> 
+    <a id="add-link" href="{%url 'task-create'  %}">&#x2b;</a>
+</div>
+
+{% comment %} <hr>
+<h1>My Todo List </h1>
+{% endcomment %}
+
+
+
+<div class="task-items-wrapper">
+        {% for task in tasks %}
+         <div class= "task-wrapper">
+            {%if task.complete %}
+                <div class = "task-title">
+                        <div class="task-complete-icon"> </div>
+                        <i><s><a href="{% url 'task-update' task.id%}">{{task}}</a></s></i>
+                </div>
+                <a class="delete-link" href ="{% url 'task-delete' task.id%}">&#215;</a>   
+                {% else %}
+                        <div class = "task-title">
+                        <div class="task-incomplete-icon"> </div>
+                        <a href="{% url 'task-update' task.id%}">{{task}}</a>
+                        </div>
+
+            <a class="delete-link" href ="{% url 'task-delete' task.id%}">&#215;</a>   {% comment %}Delete {% endcomment %}
+            {%endif%}
+            
+         </div>
+
+        {%empty%}
+        <h3>No Items in the List</h3>
+        {%endfor%}
+</div>
+
+
+
+
+
+
+
+
+{% comment %} <table>
+    <tr>
+        <th>Item</th>
+         <th></th>
+          <th></th> 
+
+    </tr>
+    {% for task in tasks %}
+        <tr>
+        <td>{{task.title}}</td>
+        <td><a href ="{% url 'task-update' task.id%}">Edit </a> </td>
+        <td><a href ="{% url 'task-delete' task.id%}">Delete </a> </td>
+         </tr>
+    {%empty%}
+        <h3>No Items in the List</h3>
+    {%endfor%}
+</table> {% endcomment %}
+
+
+{% endblock content %}
+
+

@@ -1,0 +1,33 @@
+{% extends 'base/main.html' %}
+{% block content %}
+<div class="header-bar">
+    <h1>ADD PUBLIC TASK </h1>
+</div>
+
+{% comment %} <h2>Add Public Task</h2> {% endcomment %}
+<div class="card-body">
+<form method="POST">
+    {% csrf_token %}
+    <label for="title">Title:</label><br>
+    <input type="text" name="title" required><br>
+    <label for="description">Description:</label><br>
+    <textarea name="description"></textarea><br>
+    {% comment %} <button type="submit">Add Task</button> {% endcomment %}
+    <input class="button" type="submit" value = "Add Taskk">
+</form>
+
+<div class="auth-buttons">
+    <a href="{% url 'login' %}" class="btn btn-primary btn-space">Login</a>
+    <a href="{% url 'register' %}" class="btn btn-secondary btn-space">Register</
+</div>
+
+    <style>
+        .btn-space {
+            margin-right: 10px; /* Adjust the spacing as needed */
+        }
+    </style>
+
+</div>
+
+{% endblock %}
+

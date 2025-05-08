@@ -1,0 +1,17 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+
+<div class="header-bar">
+    <h1>ADD PROTECTED TASK </h1>
+</div>
+
+  {% comment %} <h2>Add Protected Task</h2> {% endcomment %}
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% comment %} <button type="submit" class="btn btn-primary">Add Task</button> {% endcomment %}
+    <input class="button" type="submit" value = "Add Task">
+  </form>
+  <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+{% endblock %}

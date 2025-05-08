@@ -1,0 +1,291 @@
+{%extends 'base/main.html'%}
+{% block content %}
+    <style>
+        /* Custom CSS for the Dashboard */
+        body {
+            background-color: #f4f7fc;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            padding: 30px;
+        }
+        .brand-title {
+             text-align: center;
+             font-size: 3rem;
+             font-weight: bold;
+             font-family:'Playfair Display', serif;
+             color: #ffffff;
+             padding: 20px 0;
+             margin: 0;
+             background: linear-gradient(90deg,rgb(0, 189, 231) 0%,rgb(14, 141, 184) 43%,rgb(0, 201, 201));
+             border-radius: 8px;
+             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+             letter-spacing: 2px;
+             text-transform: uppercase;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
+            
+        .brand-title:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+        h2 {
+            color:#fff;
+            padding:10px;
+            border-radius:5px 5px 0 0;
+            background:linear-gradient(90deg, #EEA390 0%, #EB796F 43%, #EB796F 100% );
+            font-size: 2.5rem;
+            
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            font-size: 1.75rem;
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+
+        .task-wrapper {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+                position: relative; /* Needed for absolute positioning inside */
+    padding-bottom: 2.5rem; 
+        }
+
+        .task-wrapper:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .task-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .task-title s {
+            color: #6c757d;
+        }
+
+        .btn {
+            border-radius: 5px;
+            padding: 8px 15px;
+        }
+
+        .btn-warning:hover, .btn-danger:hover {
+            opacity: 0.85;
+        }
+
+        .btn-sm {
+            font-size: 0.875rem;
+        }
+
+        .btn-lg {
+            font-size: 1.125rem;
+            padding: 12px 25px;
+        }
+
+        .alert {
+            font-size: 1rem;
+            padding: 15px;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+            color: #856404;
+        }
+
+        .text-center {
+            text-align: center;
+            
+        }
+
+        .task-actions a {
+            margin: 0 10px;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            .task-wrapper {
+                padding: 15px;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+
+.text-end {
+    position: absolute;  /* Makes it float inside task-wrapper */
+    right: 15px;          /* Align to right */
+    bottom: 10px;         /* Align to bottom */
+}
+
+
+
+
+
+
+
+
+    </style>
+
+    <div class="container mt-5">
+      <h1 class="brand-title"><i>OCIUS TECHNOLOGIES</i></h1>
+
+        <h2 class="text-center">Dashboard</h2>
+
+        {% if request.user.is_authenticated %}
+            <div class="alert alert-info text-center">
+                Welcome,<strong>{{ request.user.username }}</strong>! You can view your private and protected tasks here.
+
+         {% comment %} <a href="{% url 'add_private_task' %}" class="btn btn-success">Add Private Task</a> <!-- Button to Add Private Task --> {% endcomment %}
+            
+            
+
+
+            </div>
+            <div class="text-center mb-4">
+                <a href="{% url 'add_public_task' %}" class="btn btn-success btn-lg">Add Public Task</a>  <!-- Button to Add Task -->
+                <!-- ADDING HERE PROTECTED        btn btn-info-->
+                <a href="{% url 'add_protected_task' %}" class="btn btn-success btn-lg">Add Protected Task</a>
+
+                <a href= "{% url 'login' %}" class = "btn btn-success btn-lg">Task Items</a>
+
+            </div>
+        {% else %}
+            <div class="alert alert-warning text-center">
+                <p><a href="{% url 'login' %}" class="btn btn-primary btn-sm">Login</a> to view your private and protected tasks.</p>
+            </div>
+        {% endif %}
+
+{% comment %} 
+        <h3>Private Tasks</h3>
+        {% for task in private_tasks %}
+            <div class="task-wrapper">
+                <div class="task-title">
+                    {% if task.complete %}
+                        <s>{{ task.title }}</s>
+                    {% else %}
+                        {{ task.title }}
+                    {% endif %}
+                </div>
+                <a href="{% url 'task-update' task.id %}">Edit</a> |
+                <a href="{% url 'task-delete' task.id %}">Delete</a>
+            </div>
+            {% empty %}
+            <p>No private tasks available.</p>
+        {% endfor %}
+  {% endcomment %}
+
+
+
+
+
+<!-- FOR DIRECT DELETE AND UPDATE                                              WORKING
+
+        <div class="row mt-5">
+            <div class="col-12 col-md-6">
+                <h3 class="text-info">Public Tasks</h3>
+                {% for task in public_tasks %}
+                    <div class="task-wrapper">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="task-title">
+                                {% if task.complete %}
+                                    <s>{{ task.title }}</s>
+                                {% else %}
+                                    {{ task.title }}
+                                {% endif %}
+                            </div>
+                            <div class="task-actions">
+                                <a href="{% url 'task-update' task.id %}" class="btn btn-warning btn-sm">Edit</a> |
+                                <a href="{% url 'task-delete' task.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="alert alert-info">No public tasks available.</div>
+                {% endfor %}
+            </div>
+-->
+
+      <div class="task-item-wrapper">
+        <h3 class="text-info">Public Tasks</h3> 
+    {% for task in public_tasks %} 
+        <div class="task-wrapper">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="task-actions"> 
+            {%if task.complete %} <div class="task-title">
+                <div class="task-complete-icon"></div>
+                <i><s><a href="{% url 'task-update' task.id%}">{{task}}</a></s></i>
+              </div>
+
+              <div class="text-end">
+                <a class="delete-link" href="{% url 'task-delete' task.id%}">&#215;</a>
+              </div> 
+            {% else %} 
+                <div class="task-title">
+                    <div class="task-incomplete-icon"></div>
+                    <a href="{% url 'task-update' task.id%}">{{task}}</a>
+                    </div>
+
+                <div class="text-end">
+                    <a class="delete-link" href="{% url 'task-delete' task.id%}">&#215;</a> {% comment %}Delete {% endcomment %}
+                </div>
+            {%endif%}
+            </div>
+          </div>
+        </div>
+        {% empty %} 
+         <div class="alert alert-info">No public tasks available.</div> 
+    {% endfor %}
+      </div>
+
+
+
+
+
+
+            <div class="col-12 col-md-6">
+                <h3 class="text-success">Protected Tasks</h3>
+                {% for task in protected_tasks %}
+                    <div class="task-wrapper">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="task-title">
+                                {% if task.complete %}
+                                    <s>{{ task.title }}</s>
+                                {% else %}
+                                    {{ task.title }}
+                                {% endif %}
+                            </div>
+                            <div class="task-actions">
+                                <a href="{% url 'task-update' task.id %}" class="btn btn-warning btn-sm">Edit</a> |
+                                <a href="{% url 'task-delete' task.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="alert alert-info">No protected tasks available.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
