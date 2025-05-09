@@ -68,10 +68,12 @@ def add_public_task(request):
 
 
 
+from . import forms
+
 @login_required
 def add_protected_task(request):
     if request.method == 'POST':
-        form = models.TaskForm(request.POST)
+        form = forms.TaskForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
             task.user = request.user
@@ -82,7 +84,7 @@ def add_protected_task(request):
                 task.save()
             return redirect('dashboard')
     else:
-        form = models.TaskForm()
+        form = forms.TaskForm()
     return render(request, 'base/add_protected_task.html', {'form': form})
 
 
@@ -141,7 +143,7 @@ class RegisterPage(FormView):
         return super(RegisterPage,self).form_valid(form)
     
 
-    def get(self,*args,**kwargs):
+    def get(self,*args,**kwargs):    #authenticatd user are blocked from register page , over ride this method  
         if self.request.user.is_authenticated:
             return redirect('tasks')
         return super(RegisterPage,self).get(*args,**kwargs)
@@ -179,7 +181,7 @@ class TaskCreate(LoginRequiredMixin,CreateView):
     fields = ['title','description','complete']
     success_url = reverse_lazy('tasks')
 
-    def form_valid(self, form):
+    def form_valid(self, form):   #create for particular user
         form.instance.user = self.request.user
         return super(TaskCreate,self).form_valid(form)
 

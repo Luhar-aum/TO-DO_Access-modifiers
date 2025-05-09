@@ -1,3 +1,7 @@
+'''
+DIRECT ADD USER TO THE GROUP ,THE RELATED TASK WILL BE SEEN TO THE  [ UI ]
+'''
+
 from django.contrib import admin
 
 # Register your models here.
