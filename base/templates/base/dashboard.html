@@ -43,7 +43,8 @@
 
         h3 {
             font-size: 1.75rem;
-            color: #28a745;
+            color:;
+            background:linear-gradient(90deg,rgb(226, 168, 8) 0%,rgb(255, 123, 111) 43%, #EB796F 100% );
             margin-bottom: 15px;
         }
 
@@ -54,8 +55,8 @@
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
-                position: relative; /* Needed for absolute positioning inside */
-    padding-bottom: 2.5rem; 
+            position: relative; /* Needed for absolute positioning inside */
+            padding-bottom: 2.5rem; 
         }
 
         .task-wrapper:hover {
@@ -133,19 +134,11 @@
         }
 
 
-.text-end {
-    position: absolute;  /* Makes it float inside task-wrapper */
-    right: 15px;          /* Align to right */
-    bottom: 10px;         /* Align to bottom */
-}
-
-
-
-
-
-
-
-
+        .text-end {
+            position: absolute;  /* Makes it float inside task-wrapper */
+            right: 15px;          /* Align to right */
+            bottom: 10px;         /* Align to bottom */
+        }
     </style>
 
     <div class="container mt-5">
@@ -233,7 +226,8 @@
         <div class="task-wrapper">
           <div class="d-flex justify-content-between align-items-center">
             <div class="task-actions"> 
-            {%if task.complete %} <div class="task-title">
+            {%if task.complete %} 
+            <div class="task-title">
                 <div class="task-complete-icon"></div>
                 <i><s><a href="{% url 'task-update' task.id%}">{{task}}</a></s></i>
               </div>
@@ -263,24 +257,48 @@
 
 
 
+    <div class="task-item-wrapper">
+        <h3 class="text-success">Protected Tasks</h3>
+            {% for task in protected_tasks %}
+                <div class="task-wrapper">
+                <div class="d-flex justify-content-between align-items-center">
+                <div class="task-title">
 
-            <div class="col-12 col-md-6">
-                <h3 class="text-success">Protected Tasks</h3>
-                {% for task in protected_tasks %}
-                    <div class="task-wrapper">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="task-title">
-                                {% if task.complete %}
-                                    <s>{{ task.title }}</s>
-                                {% else %}
-                                    {{ task.title }}
-                                {% endif %}
-                            </div>
-                            <div class="task-actions">
-                                <a href="{% url 'task-update' task.id %}" class="btn btn-warning btn-sm">Edit</a> |
+                {%if task.complete %} 
+                        <div class="task-title">
+                        <div class="task-complete-icon">
+                        </div>
+                        <i><s><a href="{% url 'task-update' task.id%}">{{task}}</a></s></i>
+                        </div>
+
+                        <div class="text-end">
+                        <a class="delete-link" href="{% url 'task-delete' task.id%}">&#215;</a>
+                        </div> 
+                {% else %} 
+                    <div class="task-title">
+                    <div class="task-incomplete-icon"></div>
+                    <a href="{% url 'task-update' task.id%}">{{task}}</a>
+                    </div>
+
+                    <div class="text-end">
+                    <a class="delete-link" href="{% url 'task-delete' task.id%}">&#215;</a> {% comment %}Delete {% endcomment %}
+                    </div>
+                {%endif%}
+
+                
+                              <!--  <a href="{% url 'task-update' task.id %}" class="btn btn-warning btn-sm">Edit</a> |
                                 <a href="{% url 'task-delete' task.id %}" class="btn btn-danger btn-sm">Delete</a>
+                                -->
                             </div>
                         </div>
+  <small class="text-muted">Allowed groups:
+                {% for group in task.allowed_groups.all %}
+                    {{ group.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </small>
+
+
+
                     </div>
                 {% empty %}
                     <div class="alert alert-info">No protected tasks available.</div>
